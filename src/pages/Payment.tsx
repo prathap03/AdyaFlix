@@ -1,45 +1,69 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 
 function Payment() {
 
 
 
 
-    const [selectedSeats,setSelectedSeats] = useState<Array<number>>([])
+    const [selectedSeats,setSelectedSeats] = useState<Array<String>>([])
     const [total,setTotal] = useState<number>(0)
+    const { id,day,time } = useParams();
+    const [movie,setMovie] = useState<any>([])
+
 
     const navigate = useNavigate()
 
-     const Book = ()=>{
+     const Book = async()=>{
+        setSelectedSeats(selectedSeats.map((seat:String) => {
+            return seat.toString()
+        }))
 
-       if(localStorage.getItem('tickets') !== null){
-              let data = JSON.parse(localStorage.getItem('tickets') || '{}')
-              let tickets = data.tickets;
-              tickets.push({
-                name:'Aavesham',
-                date:'01/05/20204',
-                time:'10:30 PM',
-                seats:selectedSeats,
-                total:total+(30.24)*(selectedSeats.length)
+        try{
+            const {data} = await axios.post(`http://localhost:8000/booking/bookMovie`,{
+                token:localStorage.getItem('token'),
+                bookingTime:time,
+                movieId: id,
+                noOfSeats: selectedSeats.length,
+                price: total+(30.24)*(selectedSeats.length),
+                bookedSeats: selectedSeats.map(String)
+            },{
+                headers:{
+                    'Authorization':`${localStorage.getItem('token')}`
+                }
             })
-              localStorage.setItem('tickets',JSON.stringify({tickets:tickets}))
-       }else{
-            localStorage.setItem('tickets',JSON.stringify({tickets:[{
-                name:'Aavesham',
-                date:'01/05/20204',
-                time:'10:30 PM',
-                seats:selectedSeats,
-                total:total+(30.24)*(selectedSeats.length)
-            }]}))
-       }
-       localStorage.removeItem("booking")
-       navigate("/user/tickets/1")
+            localStorage.removeItem("booking")
+            navigate("/user/tickets/"+data.id)
+            console.log(data)
+        }catch(err){
+            console.log(err)
+        }
+        
+       
+
      }
 
     useEffect(() => {
         setSelectedSeats([]);
         setTotal(0);
+
+        const check = async()=>{
+            
+            try{
+                const {data} = await axios.get(`http://localhost:8000/movie/getMovies/${id}/shows/${day}/${time}`)
+                console.log(data);
+                if(data){
+                    
+                    setMovie(data.movie)
+                }
+            }catch(err){
+                console.log(err)
+            }
+        }
+       
+        check()
+
         if(localStorage.getItem('booking') !== null){
             let data = JSON.parse(localStorage.getItem('booking') || '{}')
             if(data.seats.length > 0){
@@ -57,13 +81,13 @@ function Payment() {
     <div className='flex flex-col items-center flex-grow bg-[#cac5c5]'>
         <div className='w-[100%] flex flex-col bg-[#39071F] text-white p-2 text-[2rem]'>
             <div className='flex items-center gap-2'>
-            <h1>Aavesham</h1>
+            <h1>{movie.title || 'Loading'}</h1>
             <div className=' ring-2 shadow-md ring-white h-[1.7rem] w-[1.7rem] flex justify-center items-center rounded-full text-[0.7rem] p-2'>
-                <h1>U/A</h1>
+                <h1>{movie.rating || 'L'}</h1>
             </div>
             </div>
            
-            <h1 className='text-[1rem] font-light'>Today, 10:30PM</h1>
+            <h1 className='text-[1rem] font-light'>Today, {time || 'Loading'}</h1>
         </div>
 
         <div className='flex flex-grow justify-center items-center  w-[100%]'>

@@ -1,6 +1,27 @@
 
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 function Home() {
+
+    const [recommended,setRecommended] = useState<Array<any>>([])
+
+    useEffect(()=>{
+        const check = async()=>{
+            try{
+                const {data} = await axios.get("http://localhost:8000/movie/getMovies")
+                console.log(data)
+                if(data){
+                    setRecommended(data)
+                }
+            }catch(err){
+                console.log(err)
+            }
+        }
+        check()
+       
+    },[])
+
   return (
     <div className='flex flex-col   min-w-[100%] h-[100%]  flex-grow overflow-y-hidden'>
         <div className='bg-black/[70%] h-[25rem] flex justify-center items-center w-[100%]'>
@@ -17,29 +38,27 @@ function Home() {
         </div>
 
         <div className='flex mr-[4rem] justify-center gap-[3.6rem] items-center mt-[1rem] ml-[4rem] font-semibold text-[2rem]'>
-            <Link to='/movie/1'>
+          {recommended.length > 0 ? (
+            recommended.map((movie)=>{
+                return (
+                    <>
+                      <Link to={'movie/'+movie._id}>
             <div className='flex flex-col '>
             <div className='w-[15rem] relative justify-center items-center overflow-hidden rounded-[6%] h-[22rem]'>
-                <img className='h-[100%]   w-[100%] ' src="https://imgs.search.brave.com/0KybdnqkPEfolo1UU6_pt4hI88QBEVagLiespUZ2JPo/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS50ZW5vci5jb20v/dTFhRExXMVA4Z2NB/QUFBTS9mYWhhZC1m/YWFzaWwtYWF2ZXNo/YW0uZ2lm.gif"  alt="aavesham" />
-                <img className='absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]' src="https://imgs.search.brave.com/S6QpMKQvPe9k5IN9205VI4uQuVBnFAkgTT5F08UBJBw/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9zdWJk/bC5vcmcvY2RuL3Bv/c3Rlci9kZHVxcXF3/d3V2LndlYnA" alt="" />
+                <img className='h-[100%]   w-[100%] ' src={movie.gif}  alt="aavesham" />
+                <img className='absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]' src={movie.poster} alt="" />
             </div>
             <div className='flex flex-col ml-2'>
-                <h1 className='text-[1.4rem] mb-0'>Aavesham</h1>
-                <h1 className='text-[1rem] text-[#979797]'>Action/Comedy</h1>
+                <h1 className='text-[1.4rem] mb-0'>{movie.title}</h1>
+                <h1 className='text-[1rem] text-[#979797]'>{movie.genre.join("/")}</h1>
             </div>
             </div>
             </Link>
+                    </>
+                )
+            })
+          ): (<h1 className="font-semibold text-[2rem] animate-pulse text-balance">Loading...</h1>)}
         
-            <div className='flex flex-col '>
-            <div className='relative w-[15rem] justify-center items-center overflow-hidden rounded-[6%] h-[22rem]'>
-                <img className='h-[100%]   w-[100%] '  src="https://media.tenor.com/ANoIvVOqjY8AAAAM/mamitha-baiju-premalu.gif"   alt="aavesham" />
-                <img className='absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]'  src="https://imgs.search.brave.com/h9v_1nxVJXhP7CDmIB3kMW9gSvJqf23tC7VqnxVvrtQ/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/Y2luZW1hY2xvY2su/Y29tL2ltYWdlcy9w/b3N0ZXJzLzEwMDB4/MTUwMC80NS9wcmVt/YWx1LTIwMjQtb3Jp/Zy1wb3N0ZXIuanBn"alt="" />
-            </div>
-            <div className='flex flex-col ml-2'>
-                <h1 className='text-[1.4rem] mb-0'>Premalu</h1>
-                <h1 className='text-[1rem] text-[#979797]'>Romance/Comedy</h1>
-            </div>
-            </div>
 
 
 
