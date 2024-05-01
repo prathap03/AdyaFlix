@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 function SelectSeat() {
@@ -96,7 +96,7 @@ function SelectSeat() {
             <h1 className='text-[1rem] font-light'>Today, 10:30PM</h1>
         </div>
         <div className='flex w-[38%] mt-[2rem] gap-4  flex-wrap items-center justify-center '>
-        {seats.map((seat,index) => {
+        {seats.map((_,index) => {
             return <button key={index} onClick={()=>{selectSeat(index)}} className='flex '>
             <div className={`${seats[index].selected ? 'bg-green-500 text-white' : 'bg-[#D9D9D9] text-black'} ring-2 hover:scale-[95%] transition-all ease-linear justify-center items-center  flex ring-green-500 h-[3rem] w-[3.5rem] rounded-md m-[3px]`}>{index+1}</div>
           </button>

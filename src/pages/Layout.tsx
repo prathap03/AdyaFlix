@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { IoSearchOutline } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Outlet } from "react-router-dom";
