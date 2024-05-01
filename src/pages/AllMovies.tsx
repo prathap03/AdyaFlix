@@ -84,7 +84,7 @@ function AllMovies() {
                     languages:filters.languages.map((lang) => lang.name === 'Telugu' ? {...lang,selected:!lang.selected} : lang)
                 
                 })
-            }} className={`text-[#5B0A36]  bg-white ring-1 ring-[#8E888D] p-1`}>
+            }} className={`text-[#5B0A36] ${filters.languages.find(lang => lang.name === 'Telugu' && lang.selected) ? 'bg-blue-500' : ''}  bg-white ring-1 ring-[#8E888D] p-1`}>
               Telugu
             </button>
           </div>
