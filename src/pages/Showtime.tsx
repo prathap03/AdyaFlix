@@ -59,7 +59,7 @@ function Showtime() {
                 alt="aavesham"
               />
               <img
-                className="absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]"
+                className="absolute hover:hidden ease-linear transition-all duration-[250]  top-0 h-[100%] w-[100%]"
                 src={movie.poster}
                 alt=""
               />

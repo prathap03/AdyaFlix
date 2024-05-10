@@ -65,7 +65,7 @@ function SelectSeat() {
         localStorage.setItem('booking',JSON.stringify(
             {
                 id:'$e24567yiop',
-                name:'Aavesham',
+                name:movie.title,
                 date:'01/05/20204',
                 time:'10:30PM',
                 seats:selectedSeats,
@@ -121,7 +121,23 @@ function SelectSeat() {
            
             <h1 className='text-[1rem] font-light'>Today, {time}</h1>
         </div>
-        <div className='flex w-[38%] mt-[2rem] gap-4  flex-wrap items-center justify-center '>
+        <div className='flex gap-4 mt-2 scale-[120%]'>
+            <div className='flex items-center justify-center gap-2'>
+                <div className='bg-[#D9D9D9] ring-green-500 rounded-sm ring-2 h-[0.8rem] w-[0.8rem]'></div>
+                <h1>Available</h1>
+            </div>
+
+            <div className='flex items-center justify-center gap-2'>
+                <div className='bg-green-500 ring-green-500 rounded-sm ring-2 h-[0.8rem] w-[0.8rem]'></div>
+                <h1>Selected</h1>
+            </div>
+
+            <div className='flex items-center justify-center gap-2'>
+                <div className='bg-red-400 ring-red-500 rounded-sm ring-2 h-[0.8rem] w-[0.8rem]'></div>
+                <h1>Booked</h1>
+            </div>
+        </div>
+        <div className='flex w-[38%] mt-[1rem] gap-4  flex-wrap items-center justify-center '>
         {seats.map((_,index) => {
             return <button disabled={seats[index].booked} key={index} onClick={()=>{selectSeat(index)}} className='flex '>
             <div className={`${seats[index].selected ? 'bg-green-500 text-white' : 'bg-[#D9D9D9] text-black'} ${seats[index].booked && 'bg-red-400 ring-red-800'} ring-2 hover:scale-[95%] transition-all ease-linear justify-center items-center  flex ring-green-500 h-[3rem] w-[3.5rem] rounded-md m-[3px]`}>{index+1}</div>

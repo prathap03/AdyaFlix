@@ -43,7 +43,7 @@ function Register() {
             <h1 className='text-[2rem] font-semibold'>Register</h1>
             <form className='flex flex-col gap-2'>
                 <input onBlur={(e)=>{setName(e.target.value)}} type='text' className='p-2 border-none rounded-md' placeholder='Name' required/>
-                <input onBlur={(e)=>{setName(e.target.value)}} type='text' className='p-2 border-none rounded-md' placeholder='User Name' required/>
+                <input onBlur={(e)=>{setUserName(e.target.value)}} type='text' className='p-2 border-none rounded-md' placeholder='User Name' required/>
                 <input onBlur={(e)=>{setEmail(e.target.value)}} type='text' className='p-2 border-none rounded-md' placeholder='Email' required/>
                 <input onBlur={(e)=>{setPhone(e.target.value)}} type='text' className='p-2 border-none rounded-md' placeholder='Phone' required/>
                 <input onBlur={(e)=>{setPassword(e.target.value)}} type='password' className='p-2 border-none rounded-md' placeholder='Password' required />

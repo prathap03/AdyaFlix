@@ -58,6 +58,7 @@ function ViewTicket() {
          </div>
          <div className='flex flex-col'>
              <h1>{movie.title} ({movie.rating})</h1>
+            <h2>{bookingDate}</h2>
              <h1>{movie.languages[0]},2D</h1>
              <h1>Today, {bookingTime}</h1>
          </div>

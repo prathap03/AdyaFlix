@@ -6,6 +6,7 @@ function Login() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    
 
     const SignIn = async() => {
         try{
@@ -15,6 +16,8 @@ function Login() {
             })
             if(data){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('user',JSON.stringify(data.user))
+
             }else{
                 console.log('Invalid Credentials')
             }

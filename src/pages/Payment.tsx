@@ -25,9 +25,10 @@ function Payment() {
                 token:localStorage.getItem('token'),
                 bookingTime:time,
                 movieId: id,
+                showId:day,
                 noOfSeats: selectedSeats.length,
                 price: total+(30.24)*(selectedSeats.length),
-                bookedSeats: selectedSeats.map(String)
+                bookedSeats: selectedSeats
             },{
                 headers:{
                     'Authorization':`${localStorage.getItem('token')}`

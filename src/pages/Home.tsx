@@ -46,7 +46,7 @@ function Home() {
             <div className='flex flex-col '>
             <div className='w-[15rem] relative justify-center items-center overflow-hidden rounded-[6%] h-[22rem]'>
                 <img className='h-[100%]   w-[100%] ' src={movie.gif}  alt="aavesham" />
-                <img className='absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]' src={movie.poster} alt="" />
+                <img className='absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]' src={movie.poster}  alt="" />
             </div>
             <div className='flex flex-col ml-2'>
                 <h1 className='text-[1.4rem] mb-0'>{movie.title}</h1>
