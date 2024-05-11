@@ -10,6 +10,11 @@ function Layout() {
     const [authenticated, setAuthenticated] = useState<boolean>(false);
     const [user,setUser] = useState<any|null>(null)
 
+    let baseUrl = "http://localhost:8000";
+    if (import.meta.env.MODE === "production") {
+      baseUrl = "https://adyaflix-backend.onrender.com"; 
+    }
+
     const navigate = useNavigate();
     useEffect(() => {
         // Check if the user is authenticated when the component mounts
@@ -37,7 +42,7 @@ function Layout() {
             setSearch([])
             return;
         }
-        const {data} = await axios.get("http://localhost:8000/booking/search/"+query)
+        const {data} = await axios.get(`${baseUrl}/booking/search/`+query)
         if(data){
             setSearch(data)
         }

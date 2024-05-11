@@ -12,10 +12,15 @@ function AllMovies() {
     
     })
 
+    let baseUrl = "http://localhost:8000";
+    if (import.meta.env.MODE === "production") {
+      baseUrl = "https://adyaflix-backend.onrender.com"; 
+    }
+
     useEffect(()=>{
        const getMovies = async()=>{
         try{
-            const {data} = await axios.get(`http://localhost:8000/movie/getMovies`)
+            const {data} = await axios.get(`${baseUrl}/movie/getMovies`)
             if(movies){
                 console.log(data)
                 setMovies(data)

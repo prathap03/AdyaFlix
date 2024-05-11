@@ -6,11 +6,16 @@ function Login() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    let baseUrl = "http://localhost:8000";
+    if (import.meta.env.MODE === "production") {
+      baseUrl = "https://adyaflix-backend.onrender.com"; 
+    }
     
 
     const SignIn = async() => {
         try{
-            const {data} = await axios.post("http://localhost:8000/user/login",{
+            const {data} = await axios.post(`${baseUrl}/user/login`,{
                 email:email,
                 password:password
             })

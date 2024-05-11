@@ -5,10 +5,15 @@ import { Link } from "react-router-dom";
 function Tickets() {
   const [tickets, setTickets] = useState<Array<any>>([]);
 
+  let baseUrl = "http://localhost:8000";
+  if (import.meta.env.MODE === "production") {
+    baseUrl = "https://adyaflix-backend.onrender.com"; 
+  }
+
   useEffect(() => {
    const get = async()=>{
     try{
-        const {data} = await axios.get(`http://localhost:8000/booking/getBookings`,{
+        const {data} = await axios.get(`${baseUrl}/booking/getBookings`,{
             headers:{
                 'Authorization':localStorage.getItem('token')
             }

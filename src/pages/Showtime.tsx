@@ -7,18 +7,24 @@ function Showtime() {
   const [movie, setMovie] = useState<any>({});
   const [showtimes, setShowtimes] = useState<Array<any>>([]);
   const [selectedDate, setSelectedDate] = useState<any>(0);
+
+  let baseUrl = "http://localhost:8000";
+  if (import.meta.env.MODE === "production") {
+    baseUrl = "https://adyaflix-backend.onrender.com"; 
+  }
+
   useEffect(() => {
     const check = async () => {
       try {
         var { data } = await axios.get(
-          `http://localhost:8000/movie/getMovies/${id}`
+          `${baseUrl}/movie/getMovies/${id}`
         );
         console.log(data);
         if (data) {
           setMovie(data);
         }
         var { data } = await axios.get(
-          `http://localhost:8000/movie/getMovies/${id}/shows`
+          `${baseUrl}/movie/getMovies/${id}/shows`
         );
         if (data) {
             const updatedShowtimes = data.map((showtime: any) => {

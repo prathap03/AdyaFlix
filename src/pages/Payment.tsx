@@ -13,6 +13,12 @@ function Payment() {
     const [movie,setMovie] = useState<any>([])
 
 
+    let baseUrl = "http://localhost:8000";
+    if (import.meta.env.MODE === "production") {
+      baseUrl = "https://adyaflix-backend.onrender.com"; 
+    }
+
+
     const navigate = useNavigate()
 
      const Book = async()=>{
@@ -21,7 +27,7 @@ function Payment() {
         }))
 
         try{
-            const {data} = await axios.post(`http://localhost:8000/booking/bookMovie`,{
+            const {data} = await axios.post(`${baseUrl}/booking/bookMovie`,{
                 token:localStorage.getItem('token'),
                 bookingTime:time,
                 movieId: id,
@@ -52,7 +58,7 @@ function Payment() {
         const check = async()=>{
             
             try{
-                const {data} = await axios.get(`http://localhost:8000/movie/getMovies/${id}/shows/${day}/${time}`)
+                const {data} = await axios.get(`${baseUrl}/movie/getMovies/${id}/shows/${day}/${time}`)
                 console.log(data);
                 if(data){
                     

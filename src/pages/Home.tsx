@@ -6,10 +6,15 @@ function Home() {
 
     const [recommended,setRecommended] = useState<Array<any>>([])
 
+    let baseUrl = "http://localhost:8000";
+    if (import.meta.env.MODE === "production") {
+      baseUrl = "https://adyaflix-backend.onrender.com"; 
+    }
+
     useEffect(()=>{
         const check = async()=>{
             try{
-                const {data} = await axios.get("http://localhost:8000/movie/getMovies")
+                const {data} = await axios.get(`${baseUrl}/movie/getMovies`)
                 console.log(data)
                 if(data){
                     setRecommended(data)

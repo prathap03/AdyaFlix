@@ -12,13 +12,19 @@ function ViewTicket() {
     const [bookingTime,setBookingTime] = useState<string>('')
     
 
+    let baseUrl = "http://localhost:8000";
+    if (import.meta.env.MODE === "production") {
+      baseUrl = "https://adyaflix-backend.onrender.com"; 
+    }
+
+
     useEffect(() => {
         setSelectedSeats([]);
         setTotal(0);
 
         const getTicket = async()=>{
             try{
-                const {data} = await axios.get(`http://localhost:8000/booking/getBookingDetails/${id}`,
+                const {data} = await axios.get(`${baseUrl}/booking/getBookingDetails/${id}`,
                     {
                         "headers":{
                             "Authorization":localStorage.getItem('token')

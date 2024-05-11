@@ -21,6 +21,11 @@ function SelectSeat() {
     const [total,setTotal] = useState<number>(0)
     const [movie,setMovie] = useState<any>([])
 
+    let baseUrl = "http://localhost:8000";
+    if (import.meta.env.MODE === "production") {
+      baseUrl = "https://adyaflix-backend.onrender.com"; 
+    }
+
     useEffect(() => {
         var arr:Array<seat>  = [];
         const check = async()=>{
@@ -28,7 +33,7 @@ function SelectSeat() {
                 arr.push({id:i,booked:false,selected:false})
             }
             try{
-                const {data} = await axios.get(`http://localhost:8000/movie/getMovies/${id}/shows/${day}/${time}`)
+                const {data} = await axios.get(`${baseUrl}/movie/getMovies/${id}/shows/${day}/${time}`)
                 console.log(data);
                 if(data){
                     data.seats[0].map((seat:number) => {

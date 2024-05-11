@@ -13,11 +13,16 @@ function Register() {
 
   const navigate = useNavigate()
 
+  let baseUrl = "http://localhost:8000";
+  if (import.meta.env.MODE === "production") {
+    baseUrl = "https://adyaflix-backend.onrender.com"; 
+  }
+
   const SignUp = async() => {
     if(name === '' || userName === '' || email === '' || password === '' || phone === '') return console.log('Please fill all the fields')
       
     try{
-      const {data} = await axios.post("http://localhost:8000/user/register",{
+      const {data} = await axios.post(`${baseUrl}/user/register`,{
         fullName:name,
         userName:userName,
         email:email,
