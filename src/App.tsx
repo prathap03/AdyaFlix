@@ -10,6 +10,9 @@ import ViewTicket from "./pages/users/ViewTicket";
 import Login from "./pages/Login";
 
 import Register from "./pages/Register";
+import Dashboard from "./pages/admin/Dashboard";
+import AddMovie from "./pages/admin/AddMovie";
+import MovieShowtime from "./pages/admin/MovieShowtime";
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
           <Route path="/movie/:id" element={<Showtime />} />
           <Route path="/user/tickets" element={<Tickets />} />
           <Route path="/user/tickets/:id" element={<ViewTicket />} />
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/addMovie" element={<AddMovie />} />
+          <Route path="/admin/:id" element={<MovieShowtime />} />
         </Route>
         <Route
           path="/movie/:id/:day/:time/selectSeat"
