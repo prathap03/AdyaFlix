@@ -2,6 +2,30 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
+
+const MovieShows = ({movie}: {movie: any})=>{
+  const [showGif, setShowGif] = useState(false);
+  return (
+    
+      <div className='flex flex-col '>
+      <div className="w-[22rem] relative justify-center items-center overflow-hidden shadow-md rounded-md h-[25rem]">
+      <div className="relative h-[100%] w-[100%]" onTouchStart={() => setShowGif(true)} onTouchEnd={() => setShowGif(false)} onMouseEnter={() => setShowGif(true)} onMouseLeave={() => setShowGif(false)}>
+<img className="object-fill w-full h-full" src={showGif ? movie.gif : movie.poster} alt="movie" />
+</div>
+      </div>
+      <div className="flex flex-col ml-2">
+              <h1 className="text-[1.4rem] mb-0">{movie.title}</h1>
+              <h1 className="text-[1rem] text-[#979797]">
+                {movie.genre.join("/")}
+              </h1>
+
+              <p className="mt-2 text-justify w-[135%]">{movie.description}</p>
+            </div>
+      </div>
+    
+  )
+}
+
 function Showtime() {
   const { id } = useParams();
   const [movie, setMovie] = useState<any>({});
@@ -57,28 +81,29 @@ function Showtime() {
     <div className="flex flex-grow overflow-x-hidden">
       <div className="flex flex-col gap-4 w-[15%] p-4 ">
         {movie && movie.title ? (
-          <div className="flex flex-col ">
-            <div className="w-[22rem] relative justify-center items-center overflow-hidden shadow-md rounded-md h-[25rem]">
-              <img
-                className="h-[100%]   w-[100%] "
-                src={movie.gif}
-                alt="aavesham"
-              />
-              <img
-                className="absolute hover:hidden ease-linear transition-all duration-[250]  top-0 h-[100%] w-[100%]"
-                src={movie.poster}
-                alt=""
-              />
-            </div>
-            <div className="flex flex-col ml-2">
-              <h1 className="text-[1.4rem] mb-0">{movie.title}</h1>
-              <h1 className="text-[1rem] text-[#979797]">
-                {movie.genre.join("/")}
-              </h1>
+          // <div className="flex flex-col ">
+          //   <div className="w-[22rem] relative justify-center items-center overflow-hidden shadow-md rounded-md h-[25rem]">
+          //     <img
+          //       className="h-[100%]   w-[100%] "
+          //       src={movie.gif}
+          //       alt="aavesham"
+          //     />
+          //     <img
+          //       className="absolute hover:hidden ease-linear transition-all duration-[250]  top-0 h-[100%] w-[100%]"
+          //       src={movie.poster}
+          //       alt=""
+          //     />
+          //   </div>
+          //   <div className="flex flex-col ml-2">
+          //     <h1 className="text-[1.4rem] mb-0">{movie.title}</h1>
+          //     <h1 className="text-[1rem] text-[#979797]">
+          //       {movie.genre.join("/")}
+          //     </h1>
 
-              <p className="mt-2 text-justify w-[135%]">{movie.description}</p>
-            </div>
-          </div>
+          //     <p className="mt-2 text-justify w-[135%]">{movie.description}</p>
+          //   </div>
+          // </div>
+          <MovieShows key={movie._id} movie={movie} />
         ) : (
           <h1>Loading...</h1>
         )}

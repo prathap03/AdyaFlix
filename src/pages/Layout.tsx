@@ -58,15 +58,15 @@ function Layout() {
                 <div className='flex items-start justify-center text-black'>
                 <IoSearchOutline />
                 </div>
-                <input onBlur={()=>{setTimeout(()=>{setQuery("");setSearch([])},5000)}} onChange={(e)=>{setQuery(e.target.value);searchdb()}} type='text' className='bg-transparent  border-none focus:outline-none text-black w-[100%]' placeholder='Search for Movies' />
+                <input onBlur={()=>{setTimeout(()=>{setQuery("");setSearch([])},500)}} onChange={(e)=>{setQuery(e.target.value);searchdb()}} type='text' className='bg-transparent  border-none focus:outline-none text-black w-[100%]' placeholder='Search for Movies' />
      {search && (
                    <div className="absolute z-10 bg-[#fff]  shadow-md rounded-b-md top-10 left-0 w-[100%]">
                    {search.map((movie:any,index:number)=>{
                           return (
-                              <div  onClick={()=>{navigate("/movie/"+movie._id);window.location.reload()}} key={index} className='z-0 flex items-center gap-2 p-2 hover:bg-red-500 text-balck'>
+                              <div  onClick={()=>{navigate("/movie/"+movie._id);window.location.reload()}} key={index} className='z-0 transition-all ease-linear flex items-center gap-2 p-2 hover:bg-[#8D1431] hover:text-white text-balck'>
                                
                                  <img className='w-[3rem] h-[4rem]' src={movie.poster} alt="" />
-                                 <h1 className="text-black">{movie.title}</h1>
+                                 <h1 className="text-black hover:text-white">{movie.title}</h1>
                             
                             </div>
                           )
@@ -78,7 +78,7 @@ function Layout() {
             </div>
         </div>
        {authenticated ? (
-         <div className="pr-[1rem] gap-[2rem] flex p-2 justify-center items-center">
+         <div className="pr-[1rem]  w-[22%] gap-[2rem] flex p-2 justify-center items-center">
          <div className="flex items-center justify-center gap-1">
          <div className="w-[3rem] scale-[85%]  rounded-[100%] shadow-md">
             <img src="https://imgs.search.brave.com/aAFHfyw4Vb7b_KzP1Cr2cAfK4SIlXF01__zxvsqpHlk/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jZG4u/aWNvbi1pY29ucy5j/b20vaWNvbnMyLzEz/NzgvUE5HLzUxMi9h/dmF0YXJkZWZhdWx0/XzkyODI0LnBuZw" alt="" />
@@ -86,9 +86,17 @@ function Layout() {
 
 <h1 className="text-[1.7rem]">{user?.fullName.split(' ')[0]}</h1>
          </div>
+
+         <button
+         onClick={()=>{navigate("/user/tickets")}}
+         className="bg-[#8D1431] shadow-md rounded-md  w-[110%] font-semibold p-2"
+       >
+         View Bookings
+       </button>
+       
          <button
          onClick={handleSignOut}
-         className="bg-[#8D1431]  w-[110%] font-semibold p-2"
+         className="bg-[#8D1431] rounded-md shadow-md  w-[110%] font-semibold p-2"
        >
          Sign Out
        </button>

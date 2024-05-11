@@ -1,16 +1,24 @@
 import axios  from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router"
 
 
 function Login() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate()
 
     let baseUrl = "http://localhost:8000";
     if (import.meta.env.MODE === "production") {
       baseUrl = "https://adyaflix-backend.onrender.com"; 
     }
+
+    useEffect(()=>{
+        if(localStorage.getItem('token') !== null){
+            navigate('/')
+        }
+    })
     
 
     const SignIn = async() => {
@@ -22,6 +30,8 @@ function Login() {
             if(data){
                 localStorage.setItem('token',data.token)
                 localStorage.setItem('user',JSON.stringify(data.user))
+                const redirectUrl = new URLSearchParams(location.search).get("redirect") ?? "/";
+                navigate(redirectUrl);
 
             }else{
                 console.log('Invalid Credentials')

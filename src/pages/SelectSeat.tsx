@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useLocation, useNavigate, useParams } from 'react-router'
 
 function SelectSeat() {
 
@@ -26,10 +26,18 @@ function SelectSeat() {
       baseUrl = "https://adyaflix-backend.onrender.com"; 
     }
 
+
+    const location = useLocation();
+  
     useEffect(() => {
-        var arr:Array<seat>  = [];
+  
+    if(localStorage.getItem('token') === null){
+      const currentUrl = encodeURIComponent(location.pathname + location.search);
+      navigate(`/login?redirect=${currentUrl}`)
+    }
+        let arr:Array<seat>  = [];
         const check = async()=>{
-            for(var i=1;i<=100;i++){
+            for(let i=1;i<=100;i++){
                 arr.push({id:i,booked:false,selected:false})
             }
             try{
@@ -51,7 +59,7 @@ function SelectSeat() {
         setSelectedSeats([]);
         setTotal(0);
         if(localStorage.getItem('booking') !== null){
-            let data = JSON.parse(localStorage.getItem('booking') || '{}')
+            let data = JSON.parse(localStorage.getItem('booking') ?? '{}')
             if(data.seats.length > 0){
                 data.seats.map((seat:number) => {
                     arr[seat].selected = true;

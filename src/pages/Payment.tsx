@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useLocation, useNavigate, useParams } from 'react-router'
 
 function Payment() {
 
@@ -51,7 +51,15 @@ function Payment() {
 
      }
 
-    useEffect(() => {
+ 
+     const location = useLocation();
+   
+     useEffect(() => {
+   
+     if(localStorage.getItem('token') === null){
+       const currentUrl = encodeURIComponent(location.pathname + location.search);
+       navigate(`/login?redirect=${currentUrl}`)
+     }
         setSelectedSeats([]);
         setTotal(0);
 

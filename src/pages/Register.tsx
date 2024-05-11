@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 
 
@@ -17,6 +17,12 @@ function Register() {
   if (import.meta.env.MODE === "production") {
     baseUrl = "https://adyaflix-backend.onrender.com"; 
   }
+
+  useEffect(()=>{
+    if(localStorage.getItem('token') !== null){
+        navigate('/')
+    }
+})
 
   const SignUp = async() => {
     if(name === '' || userName === '' || email === '' || password === '' || phone === '') return console.log('Please fill all the fields')

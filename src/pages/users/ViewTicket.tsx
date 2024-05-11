@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 function ViewTicket() {
 
     const [selectedSeats,setSelectedSeats] = useState<Array<number>>([])
@@ -8,8 +8,9 @@ function ViewTicket() {
     const {id} = useParams();
     const [movie,setMovie] = useState<any>([])
     const [bookingId,setBookingId] = useState<string>('')
-    const [bookingDate,setBookingDate] = useState<string>('')
+    
     const [bookingTime,setBookingTime] = useState<string>('')
+    const [showGif, setShowGif] = useState(false);
     
 
     let baseUrl = "http://localhost:8000";
@@ -18,7 +19,15 @@ function ViewTicket() {
     }
 
 
-    useEffect(() => {
+    const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+
+  if(localStorage.getItem('token') === null){
+    const currentUrl = encodeURIComponent(location.pathname + location.search);
+    navigate(`/login?redirect=${currentUrl}`)
+  }
         setSelectedSeats([]);
         setTotal(0);
 
@@ -36,7 +45,7 @@ function ViewTicket() {
                     setSelectedSeats(data.bookedSeats)
                     setMovie(data.movie)
                     setTotal(data.price)
-                    setBookingDate(data.bookingDate)
+                  
                     setBookingId(data._id)
                     setBookingTime(data.bookingTime)
                 }
@@ -58,13 +67,12 @@ function ViewTicket() {
          <div className='flex flex-col p-2 bg-white rounded-md shadow-md'>
          <div className='p-4 font-mono tracking-wide text-[#39071F] text-[1.7rem]'>
          <div className='flex gap-2'>
-         <div className='w-[4em] relative justify-center items-center overflow-hidden rounded-[6%] h-[8rem]'>
-             <img className='h-[100%]   w-[100%] ' src={movie.gif}  alt="aavesham" />
-             <img className='absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]' src={movie.poster} alt="" />
-         </div>
+    
+         <div className="w-[4em] relative justify-center items-center overflow-hidden rounded-[6%] h-[8rem]"  onTouchStart={() => setShowGif(true)} onTouchEnd={() => setShowGif(false)} onMouseEnter={() => setShowGif(true)} onMouseLeave={() => setShowGif(false)}>
+  <img className="w-full h-full" src={showGif ? movie.gif : movie.poster} alt="movie" />
+</div>
          <div className='flex flex-col'>
              <h1>{movie.title} ({movie.rating})</h1>
-            <h2>{bookingDate}</h2>
              <h1>{movie.languages[0]},2D</h1>
              <h1>Today, {bookingTime}</h1>
          </div>

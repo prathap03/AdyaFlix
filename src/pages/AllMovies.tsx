@@ -1,211 +1,153 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import MovieImage from "../components/MovieImage";
 
 function AllMovies() {
+  const [movies, setMovies] = useState<any>([]);
+  const [filters, setFilters] = useState({
+    languages: [
+      { name: 'Tamil', selected: false },
+      { name: 'English', selected: false },
+      { name: 'Malayalam', selected: false },
+      { name: 'Hindi', selected: false },
+      { name: 'Telugu', selected: false }
+    ],
+    genre: [
+      { name: 'Drama', selected: false },
+      { name: 'Action', selected: false },
+      { name: 'Comedy', selected: false },
+      { name: 'Thriller', selected: false },
+      { name: 'Crime', selected: false },
+      { name: 'Sci-fi', selected: false }
+    ]
+  });
 
-    const [movies,setMovies] = useState<any>([])
+  let baseUrl = "http://localhost:8000";
+  if (import.meta.env.MODE === "production") {
+    baseUrl = "https://adyaflix-backend.onrender.com";
+  }
 
-    const [filters,setFilters] = useState({
-        languages:[{name:'Tamil',selected:false},{name:'English',selected:false},{name:'Malayalam',selected:false},{name:'Hindi',selected:false},{name:'Telugu',selected:false}],
-        genere:[{name:'Drama',selected:false},{name:'Action',selected:false},{name:'Comedy',selected:false},{name:'Thriller',selected:false},{name:'Crime',selected:false},{name:'Sci-fi',selected:false}]
-    
-    })
-
-    let baseUrl = "http://localhost:8000";
-    if (import.meta.env.MODE === "production") {
-      baseUrl = "https://adyaflix-backend.onrender.com"; 
-    }
-
-    useEffect(()=>{
-       const getMovies = async()=>{
-        try{
-            const {data} = await axios.get(`${baseUrl}/movie/getMovies`)
-            if(movies){
-                console.log(data)
-                setMovies(data)
-            }
-        }catch(err){
-            console.log(err)
+  useEffect(() => {
+    const getMovies = async () => {
+      try {
+        const { data } = await axios.get(`${baseUrl}/movie/getMovies`);
+        if (movies) {
+          setMovies(data);
         }
-       }
-       getMovies()
-    },[])
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMovies();
+  }, []);
 
-    
+  type Filters = {
+    languages: { name: string; selected: boolean }[];
+    genre: { name: string; selected: boolean }[];
+    [key: string]: { name: string; selected: boolean }[];
+  };
+
+  const toggleFilter = (type: string, name: string) => {
+    setFilters((prevFilters: Filters) => ({
+      ...prevFilters,
+      [type]: prevFilters[type].map((filter) => {
+        if (filter.name === name) {
+          return { ...filter, selected: !filter.selected };
+        }
+        return filter;
+      }),
+    }));
+  };
 
   return (
     <div className="flex flex-grow overflow-x-hidden">
-      <div className="flex flex-col gap-4 w-[15%] p-4 ">
+      {/* Filters section */}
+      <div className="flex flex-col gap-4 w-[15%] p-4">
         <div>
           <h1 className="font-semibold text-[2rem]">Filters</h1>
         </div>
 
-        <div className="bg-[#3F0822]/[22%] shadow-md rounded-md p-2 w-[100%] ">
-          <div className="flex w-[100%]  items-center justify-between">
+        {/* Language filter */}
+        <div className="bg-[#3F0822]/[22%] shadow-md rounded-md p-2 w-[100%]">
+          <div className="flex w-[100%] items-center justify-between">
             <h1 className="text-[#5B0A36] font-semibold">Languages</h1>
             <h1 className="text-[0.8rem]">Clear</h1>
           </div>
           <div className="flex flex-wrap items-center gap-4 mt-2">
-            <button  onClick={()=>{setFilters(
-                {
-                    ...filters,
-                    languages:filters.languages.map((lang) => lang.name === 'Tamil' ? {...lang,selected:!lang.selected} : lang)
-                }
-            
-            )}} className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              Tamil
-            </button>
-            <button onClick={()=>{
-                setFilters({
-                    ...filters,
-                    languages:filters.languages.map((lang) => lang.name === 'English' ? {...lang,selected:!lang.selected} : lang)
-                
-                })
-            }} className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              English
-            </button>
-            <button onClick={()=>{
-                setFilters({
-                    ...filters,
-                    languages:filters.languages.map((lang) => lang.name === 'Malayalam' ? {...lang,selected:!lang.selected} : lang)
-                
-                })
-            }} className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              Malayalam
-            </button>
-            <button onClick={()=>{
-                setFilters({
-                    ...filters,
-                    languages:filters.languages.map((lang) => lang.name === 'Hindi' ? {...lang,selected:!lang.selected} : lang)
-                
-                })
-            }} className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              Hindi
-            </button>
-            <button onClick={()=>{
-                setFilters({
-                    ...filters,
-                    languages:filters.languages.map((lang) => lang.name === 'Telugu' ? {...lang,selected:!lang.selected} : lang)
-                
-                })
-            }} className={`text-[#5B0A36] ${filters.languages.find(lang => lang.name === 'Telugu' && lang.selected) ? 'bg-blue-500' : ''}  bg-white ring-1 ring-[#8E888D] p-1`}>
-              Telugu
-            </button>
+            {filters.languages.map((lang: any) => (
+              <button
+                key={lang.name}
+                onClick={() => toggleFilter('languages', lang.name)}
+                className={` ring-1 ring-[#8E888D] p-1 ${lang.selected ? 'bg-[#5B0A36] text-white' : 'text-[#5B0A36] bg-white' }`}
+              >
+                {lang.name}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="bg-[#3F0822]/[22%] shadow-md rounded-md  p-2 w-[100%] ">
-          <div className="flex w-[100%]  items-center justify-between">
-            <h1 className="text-[#5B0A36] font-semibold">Genere</h1>
+        {/* Genre filter */}
+        <div className="bg-[#3F0822]/[22%] shadow-md rounded-md p-2 w-[100%]">
+          <div className="flex w-[100%] items-center justify-between">
+            <h1 className="text-[#5B0A36] font-semibold">Genre</h1>
             <h1 className="text-[0.8rem]">Clear</h1>
           </div>
           <div className="flex flex-wrap items-center gap-4 mt-2">
-            <button className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              Drama
-            </button>
-            <button className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              Action
-            </button>
-            <button className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              Comedy
-            </button>
-            <button className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              Thriller
-            </button>
-            <button className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              Crime
-            </button>
-            <button className="text-[#5B0A36] bg-white ring-1 ring-[#8E888D] p-1">
-              Sci-fi
-            </button>
+            {filters.genre.map((gen: any) => (
+              <button
+                key={gen.name}
+                onClick={() => toggleFilter('genre', gen.name)}
+                className={` ring-1 ring-[#8E888D] p-1 ${gen.selected ? 'bg-[#5B0A36] text-white' : 'text-[#5B0A36] bg-white' }`}
+              >
+                {gen.name}
+              </button>
+            ))}
           </div>
         </div>
       </div>
-      
-      
-      <div className="flex ml-[5rem] flex-col gap-2 flex-grow p-4 ">
-      <div>
+
+      {/* Movies section */}
+      <div className="flex ml-[5rem] flex-col gap-2 flex-grow p-4">
+        <div>
           <h1 className="font-semibold text-[2rem]">Movies</h1>
         </div>
-        <div className="flex gap-4 w-[30%]  p-1">
-        <button className="bg-[#5B0A36] shadow-md w-[20%] rounded-full text-white outline-[#8E888D] outline-2 p-1">
-              2D
-            </button>
+        <div className="flex gap-4 w-[30%] p-1">
+        {filters.languages.map((lang: any) => (
+          <button onClick={() => toggleFilter('languages', lang.name)} key={lang.name} className={`text-[#5B0A36]  ${lang.selected ? 'bg-[#5B0A36] text-white' : 'ring-1 ring-[#8E888D]'} shadow-md w-[20%] rounded-full  outline-[#8E888D] outline-2 p-1`}>
+            {lang.name}
+        </button>
+            ))}
+         
 
-            <button className="text-[#5B0A36] shadow-md w-[20%] rounded-full bg-white ring-1 ring-[#8E888D] p-1">
-              Tamil
-            </button>
 
-            <button className="text-[#5B0A36] shadow-md w-[20%] rounded-full bg-white ring-1 ring-[#8E888D] p-1">
-              English
-            </button>
 
-            <button className="text-[#5B0A36] shadow-md w-[20%] rounded-full bg-white ring-1 ring-[#8E888D] p-1">
-              Malayalam
-            </button>
-
-            <button className="text-[#5B0A36] shadow-md w-[20%] rounded-full bg-white ring-1 ring-[#8E888D] p-1">
-              Hindi
-            </button>
-
-            <button className="text-[#5B0A36] shadow-md w-[20%] rounded-full bg-white ring-1 ring-[#8E888D] p-1">
-              Telugu
-            </button>
-
-            
+          
         </div>
         <div className="grid grid-cols-5 gap-4 w-[100%]">
         {movies.length > 0 ? (
-            movies.map((movie:any) => {
-                if(filters.languages.filter((lang) => lang.selected).length > 0){
-                    if(filters.languages.filter((lang) => lang.selected).some((lang) => movie.languages.includes(lang.name))){
-                        return(
-                            <div className='flex flex-col '>
-                            <div className='w-[15rem] relative justify-center items-center overflow-hidden rounded-[6%] h-[22rem]'>
-                                <img className='h-[100%]   w-[100%] ' src={movie.gif}  alt="aavesham" />
-                                <img className='absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]' src={movie.poster} alt="" />
-                            </div>
-                            <div className='flex flex-col ml-2'>
-                                <h1 className='text-[1.4rem] mb-0'>{movie.title}</h1>
-                                <h1 className='text-[1rem] text-[#979797]'>{movie.genre.join(",")}</h1>
-                            </div>
-                            </div>
-                        )
-                    }else if(filters.languages.filter((lang) => lang.selected).some((lang) => movie.languages.includes(lang.name)) && filters.genere.filter((gen) => gen.selected).some((gen) => movie.genre.includes(gen.name))){
-                        return(
-                            <div className='flex flex-col '>
-                            <div className='w-[15rem] relative justify-center items-center overflow-hidden rounded-[6%] h-[22rem]'>
-                                <img className='h-[100%]   w-[100%] ' src={movie.gif}  alt="aavesham" />
-                                <img className='absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]' src={movie.poster} alt="" />
-                            </div>
-                            <div className='flex flex-col ml-2'>
-                                <h1 className='text-[1.4rem] mb-0'>{movie.title}</h1>
-                                <h1 className='text-[1rem] text-[#979797]'>{movie.genre.join(",")}</h1>
-                            </div>
-                            </div>
-                        )
-                    }
-                }else{
-                return(
-            <div className='flex flex-col '>
-            <div className='w-[15rem] relative justify-center items-center overflow-hidden rounded-[6%] h-[22rem]'>
-                <img className='h-[100%]   w-[100%] ' src={movie.gif}  alt="aavesham" />
-                <img className='absolute hover:hidden ease-linear transition-all duration-[250] z-10 top-0 h-[100%] w-[100%]' src={movie.poster} alt="" />
-            </div>
-            <div className='flex flex-col ml-2'>
-                <h1 className='text-[1.4rem] mb-0'>{movie.title}</h1>
-                <h1 className='text-[1rem] text-[#979797]'>{movie.genre.join(",")}</h1>
-            </div>
-            </div>
-                )}})
-            
-        ) : (<h1>Loading...</h1>)}
-
-    
-            
-    
-            
+            movies
+              .filter((movie: any) => {
+                if (filters.languages.some(lang => lang.selected)) {
+                  return filters.languages.every(lang =>
+                    lang.selected ? movie.languages.includes(lang.name) : true
+                  );
+                }
+                return true;
+              })
+              .filter((movie: any) => {
+                if (filters.genre.some(gen => gen.selected)) {
+                  return filters.genre.every(gen =>
+                    gen.selected ? movie.genre.includes(gen.name) : true
+                  );
+                }
+                return true;
+              })
+              .map((movie: any) => (
+                <MovieImage key={movie._id} movie={movie} />
+              ))
+          ) : (
+            <h1>Loading...</h1>
+          )}
         </div>
       </div>
     </div>
