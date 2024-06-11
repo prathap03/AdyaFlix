@@ -13,6 +13,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/admin/Dashboard";
 import AddMovie from "./pages/admin/AddMovie";
 import MovieShowtime from "./pages/admin/MovieShowtime";
+import Track from "./pages/Track";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/addMovie" element={<AddMovie />} />
           <Route path="/admin/:id" element={<MovieShowtime />} />
+          <Route path="/track" element={<Track />} />
         </Route>
         <Route
           path="/movie/:id/:day/:time/selectSeat"

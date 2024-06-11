@@ -71,7 +71,7 @@ function AllMovies() {
         <div className="bg-[#3F0822]/[22%] shadow-md rounded-md p-2 w-[100%]">
           <div className="flex w-[100%] items-center justify-between">
             <h1 className="text-[#5B0A36] font-semibold">Languages</h1>
-            <h1 className="text-[0.8rem]">Clear</h1>
+            {/* <h1 className="text-[0.8rem]">Clear</h1> */}
           </div>
           <div className="flex flex-wrap items-center gap-4 mt-2">
             {filters.languages.map((lang: any) => (
@@ -90,7 +90,7 @@ function AllMovies() {
         <div className="bg-[#3F0822]/[22%] shadow-md rounded-md p-2 w-[100%]">
           <div className="flex w-[100%] items-center justify-between">
             <h1 className="text-[#5B0A36] font-semibold">Genre</h1>
-            <h1 className="text-[0.8rem]">Clear</h1>
+            {/* <h1 className="text-[0.8rem]">Clear</h1> */}
           </div>
           <div className="flex flex-wrap items-center gap-4 mt-2">
             {filters.genre.map((gen: any) => (

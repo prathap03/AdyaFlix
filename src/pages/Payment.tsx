@@ -7,7 +7,7 @@ function Payment() {
 
 
 
-    const [selectedSeats,setSelectedSeats] = useState<Array<String>>([])
+    const [selectedSeats,setSelectedSeats] = useState<Array<string>>([])
     const [total,setTotal] = useState<number>(0)
     const { id,day,time } = useParams();
     const [movie,setMovie] = useState<any>([])
@@ -22,7 +22,7 @@ function Payment() {
     const navigate = useNavigate()
 
      const Book = async()=>{
-        setSelectedSeats(selectedSeats.map((seat:String) => {
+        setSelectedSeats(selectedSeats.map((seat:string) => {
             return seat.toString()
         }))
 
@@ -80,7 +80,7 @@ function Payment() {
         check()
 
         if(localStorage.getItem('booking') !== null){
-            let data = JSON.parse(localStorage.getItem('booking') || '{}')
+            let data = JSON.parse(localStorage.getItem('booking') ?? '{}')
             if(data.seats.length > 0){
                 setSelectedSeats(data.seats)
                 setTotal(data.total)
@@ -102,7 +102,7 @@ function Payment() {
             </div>
             </div>
            
-            <h1 className='text-[1rem] font-light'>Today, {time || 'Loading'}</h1>
+            <h1 className='text-[1rem] font-light'>Today, {time ?? 'Loading'}</h1>
         </div>
 
         <div className='flex flex-grow justify-center items-center  w-[100%]'>
