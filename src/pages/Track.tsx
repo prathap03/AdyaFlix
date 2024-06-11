@@ -51,7 +51,7 @@ function Track() {
       navigator.geolocation.watchPosition(handleSuccess, handleError, {
         enableHighAccuracy: true,
         maximumAge: 0,
-        timeout: 5000,
+        timeout: 500,
       });
     } else {
       console.warn('Geolocation is not supported by this browser.');
@@ -59,7 +59,7 @@ function Track() {
 
    
 
-    const intervalId = setInterval(sendLocation, 2000);
+    const intervalId = setInterval(sendLocation, 200);
 
     return () => clearInterval(intervalId);
   }, [position]);
