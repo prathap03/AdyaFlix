@@ -31,7 +31,7 @@ function Track() {
     const sendLocation = () => {
       if (position.latitude && position.longitude) {
         // https://blueband-backend.onrender.com/track
-        axios.post('http://127.0.0.1:5000/track', {
+        axios.post('https://blueband-backend.onrender.com/track', {
           carId: ip, // Replace with your actual car ID
           latitude: position.latitude,
           longitude: position.longitude,
@@ -77,7 +77,7 @@ function Track() {
 
   const SOS = async()=>{
     try{
-        await axios.post("http://127.0.0.1:5000/sos",{
+        await axios.post("https://blueband-backend.onrender.com/sos",{
             carId:ip,
             message:"Emergency"
         })
