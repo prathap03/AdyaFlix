@@ -5,13 +5,21 @@ import axios from 'axios';
 function Track() {
   const [position, setPosition] = useState({ latitude: null, longitude: null });
 
-  const [ip, setIP] = useState("");
-
+  const [ip, setIP] = useState<number>();
 
   const getData = async () => {
-    const res = await axios.get("https://api.ipify.org/?format=json");
-    console.log(res.data);
-    setIP(res.data.ip);
+    try {
+      const res = await axios.get("https://api.ipify.org/?format=json");
+      console.log(res.data);
+      const split_ip = res.data.ip.split('.');
+      console.log('split_ip[3] type: ', typeof split_ip[3]); // Should log 'string'
+      
+      const parsedIP = parseInt(split_ip[3]);
+      setIP(parsedIP);
+      console.log('parsedIP type: ', typeof parsedIP); // Should log 'number'
+    } catch (error) {
+      console.error("Error fetching IP address: ", error);
+    }
   };
 
   useEffect(() => {
@@ -22,7 +30,8 @@ function Track() {
   useEffect(() => {
     const sendLocation = () => {
       if (position.latitude && position.longitude) {
-        axios.post('https://blueband-backend.onrender.com/track', {
+        // https://blueband-backend.onrender.com/track
+        axios.post('http://127.0.0.1:5000/track', {
           carId: ip, // Replace with your actual car ID
           latitude: position.latitude,
           longitude: position.longitude,
@@ -38,11 +47,12 @@ function Track() {
 
     
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSuccess = (pos:any) => {
       const { latitude, longitude } = pos.coords;
       setPosition({ latitude, longitude });
     };
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleError = (err:any) => {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     };
@@ -67,7 +77,7 @@ function Track() {
 
   const SOS = async()=>{
     try{
-        await axios.post("https://blueband-backend.onrender.com/sos",{
+        await axios.post("http://127.0.0.1:5000/sos",{
             carId:ip,
             message:"Emergency"
         })
@@ -81,7 +91,7 @@ function Track() {
     <div className='flex items-center justify-center flex-grow'>
       <div className='flex flex-col gap-2 p-4 scale-125 bg-gray-200 rounded-md shadow-md'>
       <h1 className='text-green-500 animate-pulse'>Tracking Location</h1>
-      <p>IP: {ip}</p>
+      <p>IP: {ip?.toString()}</p>
       <p>Latitude: {position.latitude}</p>
       <p>Longitude: {position.longitude}</p>
       <button onClick={()=>{SOS()}} className='p-2 text-white transition-all bg-red-500 rounded-sm shadow-md hover:scale-95'>SOS</button>
