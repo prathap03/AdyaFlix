@@ -69,7 +69,7 @@ function Track() {
 
    
 
-    const intervalId = setInterval(sendLocation, 200);
+    const intervalId = setInterval(sendLocation, 2000);
 
     return () => clearInterval(intervalId);
   }, [position]);
