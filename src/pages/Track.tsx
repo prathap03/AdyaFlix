@@ -31,7 +31,13 @@ function Track() {
     const sendLocation = () => {
       if (position.latitude && position.longitude) {
         // https://blueband-backend.onrender.com/track
-        axios.post('https://blueband-backend.onrender.com/track', {
+        // axios.post('https://blueband-backend.onrender.com/track', {
+        //   carId: ip, // Replace with your actual car ID
+        //   latitude: position.latitude,
+        //   longitude: position.longitude,
+        // })
+
+        axios.post('http://localhost:5000/track', {
           carId: ip, // Replace with your actual car ID
           latitude: position.latitude,
           longitude: position.longitude,
@@ -77,14 +83,38 @@ function Track() {
 
   const SOS = async()=>{
     try{
-        await axios.post("https://blueband-backend.onrender.com/sos",{
-            carId:ip,
-            message:"Emergency"
-        })
+        // await axios.post("https://blueband-backend.onrender.com/sos",{
+        //     carId:ip,
+        //     message:"Emergency"
+        // })
+
+        await axios.post("http://localhost:5000/sos",{
+          carId:ip,
+          message:"Emergency"
+      })
     }catch(err){
         console.warn(err)
     }
     
+}
+
+
+const OK = async()=>{
+  try{
+    await axios.post("https://blueband-backend.onrender.com/ok",{
+      carId:ip,
+      message:"Ok"
+    })
+
+ 
+
+  }catch(err){
+    await axios.post("http://localhost:5000/ok",{
+      carId:ip,
+      message:"Ok"
+    })
+    console.warn(err)
+  }
 }
 
   return (
@@ -94,6 +124,7 @@ function Track() {
       <p>IP: {ip?.toString()}</p>
       <p>Latitude: {position.latitude}</p>
       <p>Longitude: {position.longitude}</p>
+      <button onClick={()=>{OK()}} className='p-2 text-white transition-all bg-green-500 rounded-sm shadow-md hover:scale-95'>OK</button>
       <button onClick={()=>{SOS()}} className='p-2 text-white transition-all bg-red-500 rounded-sm shadow-md hover:scale-95'>SOS</button>
       </div>
     </div>
