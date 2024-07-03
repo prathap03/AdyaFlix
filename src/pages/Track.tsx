@@ -109,7 +109,7 @@ const OK = async()=>{
  
 
   }catch(err){
-    await axios.post("https://blueband-backend.onrender.com/track/ok",{
+    await axios.post("https://blueband-backend.onrender.com/ok",{
       carId:ip,
       message:"Ok"
     })
