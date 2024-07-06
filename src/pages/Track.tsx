@@ -88,7 +88,7 @@ function Track() {
             message:"Emergency"
         })
 
-        await axios.post("http://localhost:5000/sos",{
+        await axios.post("https://blueband-backend.onrender.com/sos",{
           carId:ip,
           message:"Emergency"
       })
@@ -109,7 +109,7 @@ const OK = async()=>{
  
 
   }catch(err){
-    await axios.post("http://localhost:5000/ok",{
+    await axios.post("https://blueband-backend.onrender.com/ok",{
       carId:ip,
       message:"Ok"
     })
