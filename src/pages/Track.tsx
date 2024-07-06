@@ -37,7 +37,7 @@ function Track() {
         //   longitude: position.longitude,
         // })
 
-        axios.post('http://localhost:5000/track', {
+        axios.post('https://blueband-server-zr7gm6w4cq-el.a.run.app/track', {
           carId: ip, // Replace with your actual car ID
           latitude: position.latitude,
           longitude: position.longitude,
@@ -83,10 +83,10 @@ function Track() {
 
   const SOS = async()=>{
     try{
-        // await axios.post("https://blueband-backend.onrender.com/sos",{
-        //     carId:ip,
-        //     message:"Emergency"
-        // })
+        await axios.post("https://blueband-server-zr7gm6w4cq-el.a.run.app/sos",{
+            carId:ip,
+            message:"Emergency"
+        })
 
         await axios.post("http://localhost:5000/sos",{
           carId:ip,
@@ -101,7 +101,7 @@ function Track() {
 
 const OK = async()=>{
   try{
-    await axios.post("https://blueband-backend.onrender.com/ok",{
+    await axios.post("https://blueband-server-zr7gm6w4cq-el.a.run.app/ok",{
       carId:ip,
       message:"Ok"
     })
